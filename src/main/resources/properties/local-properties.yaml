@@ -1,0 +1,12 @@
+api:
+  id:           "0000000"
+  
+tls.keystore:
+  type:         "pkcs12"  
+  path:         "cert/tls-staging.p12"
+  alias:        "server" 
+
+correlation:
+  impose: "true"
+
+logger.prettyPrint: "true" 

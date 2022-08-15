@@ -1,0 +1,12 @@
+api:
+  id:           "00000000"
+  
+tls.keystore:
+  type:         ""  
+  path:         ""
+  alias:        "" 
+
+correlation:
+  impose: "true"  
+  
+logger.prettyPrint: "false" 

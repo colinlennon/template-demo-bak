@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <servers>
+
+    <!--Nestle Anypoint platform credentials here-->
+    <server>
+      <id>anypoint-exchange-v2</id>
+      <username>username/~~~Token~~~</username>      
+      <password>PASSWORD/REPLACE_YOUR_TOKEN_HERE</password>
+    </server>
+    <server>
+      <id>cloudhub</id>
+      <username>username/~~~Token~~~</username>      
+      <password>PASSWORD/REPLACE_YOUR_TOKEN_HERE</password>
+    </server>
+    <server>
+      <id>exchange</id>
+      <username>username/~~~Token~~~</username>      
+      <password>PASSWORD/REPLACE_YOUR_TOKEN_HERE</password>
+    </server>
+
+    <!--Company mule-nexus repo credentials-->
+    <server>
+      <id>MuleRepository</id>
+      <username>username</username>
+      <password>REPLACE_NESTLE_NEXUS_PASSWORD</password>
+    </server>
+    <server>
+      <id>release-ee</id>
+      <username>username</username>
+      <password>REPLACE_NESTLE_NEXUS_PASSWORD</password>
+    </server>    
+
+    <!--Modify according to Artifact repo credentials -->
+    <server>
+      <id>mulesoft-consulting</id>
+      <username>username</username>
+      <password>REPLACE_YOUR_TOKEN_HERE</password>
+    </server>
+
+  </servers>
+    <profiles>
+    <profile>
+      <id>Mule</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <id>MuleRepository</id>
+          <name>MuleRepository</name>
+          <url>https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/</url>
+          <layout>default</layout>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
+</settings>

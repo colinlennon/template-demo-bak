@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--Parent bom -->
+    <parent>
+        <groupId>4662d833-1567-4253-b115-eb71a03c7051</groupId>
+        <artifactId>solutions-bom</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
+    <artifactId>solutions-parent-pom</artifactId>
+    <version>0.0.2</version>
+    <packaging>pom</packaging>
+    <name>solutions-parent-pom</name>
+
+    <properties>
+        <deployment.prefix>mc${deployment.access}-${deployment.region}${deployment.envShort}-</deployment.prefix>
+        <deployment.suffix>-v${deployment.major.version}</deployment.suffix>
+        <deployment.name>${deployment.prefix}${project.artifactId}${deployment.suffix}</deployment.name>
+
+        <ap.environment>${deployment.envName}</ap.environment>
+        <ap.buId>${deployment.buId}</ap.buId>
+        <ap.buName>${deployment.buName}</ap.buName>
+        <ap.region>${deployment.region}</ap.region>
+        <ap.workers>${deployment.workers}</ap.workers>
+        <ap.workerType>${deployment.workerType}</ap.workerType>
+
+        <ca.clientId>${connectedApp.clientId}</ca.clientId>
+        <ca.clientSecret>${connectedApp.clientSecret}</ca.clientSecret>
+
+        <!-- Visualiser properties -->
+        <api.layer.eapi>Experience</api.layer.eapi>
+        <api.layer.papi>Process</api.layer.papi>
+        <api.layer.sapi>System</api.layer.sapi>
+        <api.layer.none>None</api.layer.none>
+        <!--  ************************* -->
+    </properties>
+        <build>
+            <resources>
+                <resource>
+                    <directory>src/main/resources</directory>
+                    <filtering>true</filtering>
+                </resource>
+            </resources>
+            <testResources>
+                <testResource>
+                    <directory>src/test/resources</directory>
+                    <filtering>true</filtering>
+                </testResource>
+            </testResources>
+            <pluginManagement>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <configuration>
+                            <nonFilteredFileExtensions>
+                                <nonFilteredFileExtension>p12</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>crt</nonFilteredFileExtension>
+                                <nonFilteredFileExtension>pem</nonFilteredFileExtension>
+                            </nonFilteredFileExtensions>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.mule.tools.maven</groupId>
+                        <artifactId>mule-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <cloudHubDeployment>
+                                <server>cloudhub</server>
+                                <businessGroupId>${ap.buId}</businessGroupId>
+                                <businessGroup>${ap.buName}</businessGroup>
+                                <environment>${ap.environment}</environment>
+                                <region>${ap.region}</region>
+                                <muleVersion>${app.runtime}</muleVersion>
+                                <workers>${ap.workers}</workers>
+                                <workerType>${ap.workerType}</workerType>
+                                <objectStoreV2>true</objectStoreV2>
+                                <applicationName>${deployment.name}</applicationName>
+                                <deploymentTimeout>600000</deploymentTimeout>
+                                <properties>
+                                    <anypoint.platform.config.analytics.agent.enabled>true</anypoint.platform.config.analytics.agent.enabled>
+                                    <anypoint.platform.visualizer.layer>${api.layer}</anypoint.platform.visualizer.layer>
+                                    <anypoint.platform.client_id>${ap.client_id}</anypoint.platform.client_id>
+                                    <anypoint.platform.client_secret>${ap.client_secret}</anypoint.platform.client_secret>
+                                    <env>${api.env}</env>
+                                    <encrypt.key>${encrypt.key}</encrypt.key>
+                                </properties>
+                            </cloudHubDeployment>
+                        </configuration>
+                    </plugin>
+
+                    <!-- MUnit -->
+                    <plugin>
+                        <groupId>com.mulesoft.munit.tools</groupId>
+                        <artifactId>munit-maven-plugin</artifactId>
+                        <version>${munit.version}</version>
+                        <executions>
+                            <execution>
+                                <id>test</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>test</goal>
+                                    <goal>coverage-report</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <runtimeVersion>${app.runtime}</runtimeVersion>
+                            <runtimeProduct>MULE_EE</runtimeProduct>
+                            <environmentVariables>
+                                <encrypt.key>${encrypt.key}</encrypt.key>
+                            </environmentVariables>
+                            <coverage>
+                                <runCoverage>true</runCoverage>
+                                <failBuild>false</failBuild>
+                                <requiredApplicationCoverage>0</requiredApplicationCoverage>
+                                <requiredResourceCoverage>0</requiredResourceCoverage>
+                                <requiredFlowCoverage>0</requiredFlowCoverage>
+                                <formats>
+                                    <format>console</format>
+                                    <format>html</format>
+                                    <format>json</format>
+                                </formats>
+                            </coverage>
+                        </configuration>
+                    </plugin>
+                    <!-- ********** -->
+                </plugins>
+            </pluginManagement>
+        </build>
+
+    </project>

@@ -1,0 +1,17 @@
+api:
+  id:           "16091904"
+  port:         "8082"
+  
+tls.keystore:
+  type:         "pkcs12"  
+  path:         "cert/rest-template.p12"
+  alias:        "server" 
+  
+logger:
+  prettyPrint:  "false" 
+  
+error:
+  sanitize: "false"
+
+correlation:
+  impose: "true"  

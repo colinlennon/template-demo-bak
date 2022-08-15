@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
+	<http:listener-config
+		name="api-httpListenerConfig">
+		<http:listener-connection host="0.0.0.0"
+			port="${app.port}" tlsContext="apiTLSContext" protocol="HTTPS" />
+	</http:listener-config>
+	<apikit:config name="api-config"
+		api="resource::4662d833-1567-4253-b115-eb71a03c7051:rest-api-template-spec:1.0.0:raml:zip:api.raml"
+		outboundHeadersMapName="outboundHeaders"
+		httpStatusVarName="httpStatus" />
+	<flow name="api-main">
+		<http:listener config-ref="api-httpListenerConfig"
+			path="/api/*">
+			<http:response
+				statusCode="#[vars.httpStatus default 200]">
+				<http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+			</http:response>
+			<http:error-response
+				statusCode="#[vars.httpStatus as Number default 500]">
+				<http:body><![CDATA[#[payload]]]></http:body>
+				<http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+			</http:error-response>
+		</http:listener>
+		<flow-ref doc:name="assigning-correlation-id"
+			doc:id="5ce2ae6b-86f8-4684-871f-067895ca1f0f"
+			name="assigning-correlation-id" />
+		<apikit:router config-ref="api-config" />
+		<error-handler>
+			<on-error-propagate enableNotifications="true"
+				logException="true" doc:name="On Error Propagate"
+				doc:id="407975fe-792a-4c51-8412-615e91aaea7b">
+				<flow-ref doc:name="MainErrorHandlerFlow"
+					doc:id="97dc5283-3839-4f45-800e-800e044a58d3"
+					name="MainErrorHandlerFlow" />
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="get:\ping:api-config">
+		<flow-ref doc:name="get-ping-impl"
+			doc:id="7fc7fb31-61d0-4132-93b8-e5d91d66ef7b" name="get-ping-impl" />
+	</flow>
+</mule>

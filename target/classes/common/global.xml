@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule
+	xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+
+
+	<tls:context name="apiTLSContext">
+		<tls:key-store type="${tls.keystore.type}"
+			path="${tls.keystore.path}"
+			password="${secure::tls.keystore.password}"
+			keyPassword="${secure::tls.keystore.keyPassword}"
+			alias="${tls.keystore.alias}" />
+	</tls:context>
+	<!-- <apikit:config name="nestle-rest-api-config" api="${api.spec}" outboundHeadersMapName="outboundHeaders" 
+		httpStatusVarName="httpStatus" /> -->
+
+	<api-gateway:autodiscovery apiId="${api.id}"
+		flowRef="api-main" ignoreBasePath="true" />
+
+	<configuration-properties
+		file="properties/${env}-properties.yaml" doc:name="Env Config Props" />
+
+	<configuration-properties
+		file="properties/common-properties.yaml" doc:name="Common Config Props" />
+		
+	<configuration-properties
+		doc:name="Error Config Prop"
+		doc:id="632969a9-6043-4ab8-bc32-fb39deac3c3a"
+		file="config/error-properties-template.yaml" />
+
+	<secure-properties:config
+		name="secureEnvPropsConfig" doc:name="Secure Properties Config"
+		doc:id="7960805e-4358-4b4f-a242-5b305bae6189"
+		file="properties/${env}-secure-properties.yaml" key="${encrypt.key}">
+	</secure-properties:config>
+	
+	<json-logger:config name="JSON_Logger_Config"
+		doc:name="JSON Logger Config"
+		doc:id="1c870814-f163-4044-b175-4fa42b614ae2" 
+		prettyPrint="${logger.prettyPrint}" 
+		applicationName="${app.name}" applicationVersion="${app.version}"
+		environment="${env}" />
+
+</mule>

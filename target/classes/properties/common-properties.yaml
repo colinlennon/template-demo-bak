@@ -1,0 +1,11 @@
+errors:
+  applicationPayload:
+    log: "true"
+  externalApiErrorPayload:
+    log: "true"    
+    
+app:
+  name:         "${project.artifactId}"
+  version:      "${project.version}"
+  layer:        "EXP"
+  port:         "8082" 
