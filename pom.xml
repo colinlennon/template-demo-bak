@@ -9,11 +9,11 @@
 		<version>0.0.2</version>
 	</parent>
 
-	<!-- TODO: Replace this with com.{mycompany} -->
+	<!-- PLACEHOLDER: project.groupId -->
 	<groupId>4662d833-1567-4253-b115-eb71a03c7051</groupId>
-	<!-- TODO: Replace artifact id with project name -->
+	<!-- PLACEHOLDER: project.artifactId -->
 	<artifactId>template-demo</artifactId>
-	<!-- TODO: Update API version -->
+	<!-- PLACEHOLDER: project.version -->
 	<version>1.0.4</version>
 	<packaging>mule-application</packaging>
 
