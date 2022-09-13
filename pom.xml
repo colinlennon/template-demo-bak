@@ -181,13 +181,18 @@
 			<classifier>mule-plugin</classifier>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- START: rest-api-template dependency -->
 		<dependency>
-            <groupId>4662d833-1567-4253-b115-eb71a03c7051</groupId>
-            <artifactId>template-demo</artifactId>
-            <version>1.0.2</version>
-            <classifier>raml</classifier>
-            <type>zip</type>
-        </dependency>
+		    <groupId>4662d833-1567-4253-b115-eb71a03c7051</groupId>
+		    <artifactId>template-demo</artifactId>
+		    <version>1.0.2</version>
+		    <classifier>raml</classifier>
+		    <type>zip</type>
+		</dependency>
+		
+		<!-- PLACEHOLDER: api-spec dependency -->
+
 	</dependencies>
 
 	<!-- TODO: Remove this repository and replace with artifact repository where Parent-POM files are published-->
